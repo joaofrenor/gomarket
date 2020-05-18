@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+import React, { useMemo } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -16,39 +15,30 @@ import formatValue from '../../utils/formatValue';
 
 import { useCart } from '../../hooks/cart';
 
-// Calculo do total
-// Navegação no clique do TouchableHighlight
-
 const FloatingCart: React.FC = () => {
   const { products } = useCart();
 
   const navigation = useNavigation();
 
   const cartTotal = useMemo(() => {
-    // TODO RETURN THE SUM OF THE PRICE FROM ALL ITEMS IN THE CART
+    const cartAmount = products.reduce((accumulator, product) => {
+      const total = accumulator + product.price * product.quantity;
 
-    const quantity = products.reduce((accumulator, product) => {
-      accumulator += product.price * product.quantity;
-
-      return accumulator;
+      return total;
     }, 0);
 
-    return formatValue(quantity);
+    return formatValue(cartAmount);
   }, [products]);
 
   const totalItensInCart = useMemo(() => {
-    // TODO RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
+    const cartItems = products.reduce((accumulator, product) => {
+      const total = accumulator + product.quantity;
 
-    const quantity = products.reduce((accumulator, product) => {
-      accumulator += 1 * product.quantity;
-
-      return accumulator;
+      return total;
     }, 0);
 
-    return quantity;
+    return cartItems;
   }, [products]);
-
-  const { colors, title } = useContext(ThemeContext);
 
   return (
     <Container>
@@ -56,13 +46,15 @@ const FloatingCart: React.FC = () => {
         testID="navigate-to-cart-button"
         onPress={() => navigation.navigate('Cart')}
       >
-        <FeatherIcon name="shopping-cart" size={24} color={colors.primary} />
+        <FeatherIcon name="shopping-cart" size={24} color="#f3f9ff" />
         <CartButtonText>{`${totalItensInCart} itens`}</CartButtonText>
-      </CartButton>
 
-      <CartPricing>
-        <CartTotalPrice>{cartTotal}</CartTotalPrice>
-      </CartPricing>
+        <CartPricing>
+          <CartTotalPrice>{cartTotal}</CartTotalPrice>
+        </CartPricing>
+
+        <FeatherIcon name="chevron-right" size={24} color="#f3f9ff" />
+      </CartButton>
     </Container>
   );
 };

@@ -1,11 +1,9 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 
-  padding: 10px 20px;
-`;
-
-export const Switch = styled.Switch`
-  bottom: 26px;
+  padding-top: 10px;
 `;

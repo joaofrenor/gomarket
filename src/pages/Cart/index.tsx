@@ -1,9 +1,10 @@
-import React, { useMemo, useContext } from 'react';
+import React, { useMemo } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { View } from 'react-native';
 
-import { ThemeContext } from 'styled-components';
+import EmptyCart from '../../components/EmptyCart';
+
 import {
   Container,
   ProductContainer,
@@ -48,37 +49,32 @@ const Cart: React.FC = () => {
   }
 
   const cartTotal = useMemo(() => {
-    // TODO RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
+    const cartAmount = products.reduce((accumulator, product) => {
+      const total = accumulator + product.price * product.quantity;
 
-    const quantity = products.reduce((accumulator, product) => {
-      accumulator += product.price * product.quantity;
-
-      return accumulator;
+      return total;
     }, 0);
 
-    return formatValue(quantity);
+    return formatValue(cartAmount);
   }, [products]);
 
   const totalItensInCart = useMemo(() => {
-    // TODO RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
+    const cartItems = products.reduce((accumulator, product) => {
+      const total = accumulator + product.quantity;
 
-    const quantity = products.reduce((accumulator, product) => {
-      accumulator += 1 * product.quantity;
-
-      return accumulator;
+      return total;
     }, 0);
 
-    return quantity;
+    return cartItems;
   }, [products]);
-
-  const { colors } = useContext(ThemeContext);
 
   return (
     <Container>
       <ProductContainer>
-        <ProductList
+        <ProductList<Product>
           data={products}
           keyExtractor={item => item.id}
+          ListEmptyComponent={<EmptyCart />}
           ListFooterComponent={<View />}
           ListFooterComponentStyle={{
             height: 80,
@@ -121,7 +117,7 @@ const Cart: React.FC = () => {
         />
       </ProductContainer>
       <TotalProductsContainer>
-        <FeatherIcon name="shopping-cart" color={colors.secondary} size={24} />
+        <FeatherIcon name="shopping-cart" color="#fff" size={24} />
         <TotalProductsText>{`${totalItensInCart} itens`}</TotalProductsText>
         <SubtotalValue>{cartTotal}</SubtotalValue>
       </TotalProductsContainer>

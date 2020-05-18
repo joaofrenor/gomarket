@@ -1,67 +1,49 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-
-import { Image } from 'react-native';
 
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import { ThemeContext } from 'styled-components';
-import Dashboard from '../pages/Dashboard';
-import Cart from '../pages/Cart';
 import Header from '../components/Header';
 
-import Logo from '../assets/logo.png';
-
-import LogoDark from '../assets/logoDark.png';
+import Dashboard from '../pages/Dashboard';
+import Cart from '../pages/Cart';
 
 const App = createStackNavigator();
 
-interface Props {
-  toggleTheme(): void;
-}
-
-const AppRoutes: React.FC<Props> = ({ toggleTheme }) => {
-  const { logo, colors } = useContext(ThemeContext);
-
-  return (
-    <App.Navigator
-      screenOptions={{
+const AppRoutes: React.FC = () => (
+  <App.Navigator
+    screenOptions={{
+      headerShown: true,
+      cardStyle: { backgroundColor: '#313746' },
+    }}
+    initialRouteName="Dashboard"
+  >
+    <App.Screen
+      options={{
         headerShown: true,
-        cardStyle: { backgroundColor: '#EBEEF8' },
+        headerTransparent: true,
+        headerTitle: () => <Header />,
       }}
-      initialRouteName="Dashboard"
-    >
-      <App.Screen
-        options={{
-          headerShown: true,
-          headerTransparent: true,
-          header: () => <Header toggleTheme={toggleTheme} />,
-        }}
-        name="Dashboard"
-        component={Dashboard}
-      />
-      <App.Screen
-        options={{
-          headerTransparent: true,
-          headerTitle: () => <Image source={logo} />,
-          headerBackTitleVisible: false,
-          headerLeftContainerStyle: {
-            marginLeft: 20,
-          },
+      name="Dashboard"
+      component={Dashboard}
+    />
+    <App.Screen
+      options={{
+        headerTransparent: true,
+        headerTitle: () => <Header />,
+        headerBackTitleVisible: false,
+        headerLeftContainerStyle: {
+          marginLeft: 20,
+        },
 
-          headerBackImage: () => (
-            <FeatherIcon
-              name="chevron-left"
-              size={24}
-              color={colors.terciary}
-            />
-          ),
-        }}
-        name="Cart"
-        component={Cart}
-      />
-    </App.Navigator>
-  );
-};
+        headerBackImage: () => (
+          <FeatherIcon name="chevron-left" size={24} color="#f3f9ff" />
+        ),
+      }}
+      name="Cart"
+      component={Cart}
+    />
+  </App.Navigator>
+);
 
 export default AppRoutes;

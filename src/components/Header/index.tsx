@@ -1,28 +1,14 @@
-import React, { useContext } from 'react';
-import { Image } from 'react-native';
-import { ThemeContext } from 'styled-components';
+import React from 'react';
+import { Image, Switch } from 'react-native';
 
-import LogoLight from '../../assets/logo.png';
-import LogoDark from '../../assets/logoDark.png';
+import Logo from '../../assets/logo.png';
 
-import { Container, Switch } from './styles';
+import { Container } from './styles';
 
-interface Props {
-  toggleTheme(): void;
-}
-
-const Header: React.FC<Props> = ({ toggleTheme }) => {
-  const { colors, title } = useContext(ThemeContext);
-
+const Header: React.FC = () => {
   return (
     <Container>
-      <Image source={title === 'light' ? LogoLight : LogoDark} />
-      <Switch
-        onValueChange={() => toggleTheme()}
-        value
-        trackColor={{ false: colors.terciary, true: colors.terciary }}
-        thumbColor={title === 'light' ? '#EBEEF8' : '#444'}
-      />
+      <Image source={Logo} />
     </Container>
   );
 };
